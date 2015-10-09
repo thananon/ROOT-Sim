@@ -13,10 +13,27 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
+    <!-- Flatdoc -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src='https://cdn.rawgit.com/rstacruz/flatdoc/v0.9.0/legacy.js'></script>
+    <script src='https://cdn.rawgit.com/rstacruz/flatdoc/v0.9.0/flatdoc.js'></script>
+
+    <!-- Flatdoc theme -->
+    <link  href='https://cdn.rawgit.com/rstacruz/flatdoc/v0.9.0/theme-white/style.css' rel='stylesheet'>
+    <script src='https://cdn.rawgit.com/rstacruz/flatdoc/v0.9.0/theme-white/script.js'></script>
+
+    <!-- Initializer -->
+    <script>
+      Flatdoc.run({
+        fetcher: Flatdoc.github('USER/REPO')
+      });
+    </script>
+
+
     <title>ROOT-Sim by HPDCS</title>
   </head>
 
-  <body>
+  <body role='flatdoc'>
     <header>
       <div class="inner">
         <h1>ROOT-Sim</h1>
@@ -27,6 +44,14 @@
 
     <div id="content-wrapper">
       <div class="inner clearfix">
+
+<div class='content-root'>
+    <div class='menubar'>
+      <div class='menu section' role='flatdoc-menu'></div>
+    </div>
+    <div role='flatdoc-content' class='content'></div>
+  </div>
+
         <section id="main-content">
           <h1>
 <a id="the-rome-optimistic-simulator-root-sim" class="anchor" href="#the-rome-optimistic-simulator-root-sim" aria-hidden="true"><span class="octicon octicon-link"></span></a>The ROme OpTimistic Simulator (ROOT-Sim)</h1>
