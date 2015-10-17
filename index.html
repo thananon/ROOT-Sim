@@ -4,7 +4,7 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
@@ -14,14 +14,32 @@
     <![endif]-->
 
     <!-- Flatdoc -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src='https://cdn.rawgit.com/rstacruz/flatdoc/v0.9.0/legacy.js'></script>
-    <script src='https://cdn.rawgit.com/rstacruz/flatdoc/v0.9.0/flatdoc.js'></script>
+    <script src="javascripts/jquery.min.js"></script>
+    <script src='javascripts/legacy.js'></script>
+    <script src='javascripts/flatdoc.js'></script>
+	
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script language="javascript" type="text/javascript">  
 
-    <!-- Flatdoc theme -->
-    <link  href='https://cdn.rawgit.com/rstacruz/flatdoc/v0.9.0/theme-white/style.css' rel='stylesheet'>
-    <script src='https://cdn.rawgit.com/rstacruz/flatdoc/v0.9.0/theme-white/script.js'></script>
+	$(document).ready(function () {
+		 GetLatestReleaseInfo();  
+	});  
 
+	function GetLatestReleaseInfo() {
+	   $.getJSON("https://api.github.com/repos/HPDCS/ROOT-Sim/tags").done(function (json) {
+			var release = json[0];
+			if(release == null)
+				return;
+			var downloadURL = release.zipball_url;
+			$("#latest-name").html("<h3>Latest Stable Version - v" + release.name + "</h3>");
+			$("#latest-zip").attr("href", release.zipball_url);
+			$("#latest-tgz").attr("href", release.tarball_url);
+	   });    
+	}  
+	</script>
+
+    
     <!-- Initializer -->
     <script>
       Flatdoc.run({
@@ -30,7 +48,7 @@
     </script>
 
 
-    <title>ROOT-Sim by HPDCS</title>
+    <title>ROOT-Sim: the ROme OpTimistic Simulator</title>
   </head>
 
   <body role='flatdoc'>
@@ -44,113 +62,37 @@
 
     <div id="content-wrapper">
       <div class="inner clearfix">
+	  
+	  <nav>
+	    <div>
+		  <ul class="nav">
+			<li><a href="https://github.com/HPDCS/ROOT-Sim/wiki">Wiki</a></li>
+			<li><a href="#">Documentation</a></li>
+			<li><a href="https://github.com/HPDCS/ROOT-Sim/issues">Issues</a></li>
+		  </ul>
+		</div>
+      </nav>
 
-<div class='content-root'>
-    <div class='menubar'>
-      <div class='menu section' role='flatdoc-menu'></div>
-    </div>
-    <div role='flatdoc-content' class='content'></div>
-  </div>
+	  <section id="main-content">
+		<div class='content-root'>
+			<div role='flatdoc-content' class='content'></div>
+		</div>
+	  </section>
 
-        <section id="main-content">
-          <h1>
-<a id="the-rome-optimistic-simulator-root-sim" class="anchor" href="#the-rome-optimistic-simulator-root-sim" aria-hidden="true"><span class="octicon octicon-link"></span></a>The ROme OpTimistic Simulator (ROOT-Sim)</h1>
 
-<p><em>Brought to you by the High Performance and Dependable Computing Systems (HPDCS)
-at Sapienza, University of Rome</em></p>
-
-<hr>
-
-<p>The ROme OpTimistic Simulator is an x86-64 Open Source, multithreaded parallel simulation platform
-developed using C/POSIX technology. It transparently supports all the mechanisms associated
-with parallelization (e.g., mapping of simulation objects on different kernel instances) and
-optimistic synchronization (e.g., state recoverability).</p>
-
-<p>The programming model supported by ROOT-Sim allows the simulation model developer 
-to use a simple application-callback function named ProcessEvent() as the event handler,
-whose parameters determine which simulation object is currently taking control for
-processing its next event, and where the state of this object is located in memory. 
-An object is a data structure, whose state can be scattered on dynamically allocated
-memory chunks, hence the memory address passed to the callback locates a top level
-data structure implementing the object state-layout.</p>
-
-<p>ROOT-Sim's development started as a research project late back in 1987, and is currently
-run by the High Performance and Dependable Computing Systems group at the 
-Dipartimento di Ingegneria Informatica, Automatica e Gestionale, Sapienza, University of Rome.</p>
-
-<h2>
-<a id="about-this-version" class="anchor" href="#about-this-version" aria-hidden="true"><span class="octicon octicon-link"></span></a>About this Version</h2>
-
-<p>This version of ROOT-Sim stands as the latest development branch of the simulator.
-Currently, it supports a high-performance multithreaded execution on multicore environments.
-The goal of this ultimate version of the simulator is to port all the lessons learned during
-almost 30 years of research on more modern multicore architectures. While the current
-version still does not allow to run on distributed environments, it will in the near
-future, after that many low-level optimizations are completed.</p>
-
-<p>This new version strives to be as backwards compatible as possible, letting all the
-historic simulation models developed on ROOT-Sim be compatible, although some
-recent changes in the simulator's architecture require minor modifications to
-the original models' sources (which are nevertheless being updated in the current branch).</p>
-
-<h2>
-<a id="installation-notes" class="anchor" href="#installation-notes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation Notes</h2>
-
-<p>ROOT-Sim uses autotools to provide an installation workflow which is
-common for all supported platforms. This repository does not provide
-already-generated installation scripts (while released tarballs do),
-rather we provide the convenience <code>autogen.sh</code> script which should
-build everything on the target machine. Using autotools, <code>autoconf</code>,
-<code>automake</code> and <code>libtoolize</code> are required to let <code>autogen.sh</code> generate
-the correct <code>configure</code> script.</p>
-
-<p>Briefly, the shell commands <code>./configure; make; make install</code> should
-configure, build, and install this package.
-Also, you can also type <code>make uninstall</code> to remove the installed files.</p>
-
-<p>By default, <code>make install</code> installs the package's commands under
-<code>/usr/local/bin</code>, include files under <code>/usr/local/include</code>, etc.  You
-can specify an installation prefix other than <code>/usr/local</code> by giving
-<code>configure</code> the option <code>--prefix=PREFIX</code>, where <code>PREFIX</code> must be an
-absolute path name.</p>
-
-<p>ROOT-Sim uses many <code>gcc</code> extensions, so the currently supported
-compiler is only <code>gcc</code>.</p>
-
-<h3>
-<a id="optional-features" class="anchor" href="#optional-features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Optional Features</h3>
-
-<p>When running the simulation model, ROOT-Sim allocates a separate
-stack for each Logical Process, so as to completely separate
-their execution contexts, using custom User-Level Threads.
-This could require longer simulation startup
-time, which could be avoided during model development by passing
-<code>configure</code> the option <code>--disable-ult</code></p>
-
-<p>When debugging the platform, it is suggested to pass 
-<code>configure</code> the option <code>--enable-debug</code> to compile the simulator
-with more strict error checking, and to include all debugging symbols.</p>
-
-<h2>
-<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
-
-<p>When running <code>make install</code>, the <code>rootsim-cc</code> compiler is added to the path.</p>
-
-<p>To compile a simulaton model, simply <code>cd</code> into the project's directory
-and type <code>rootsim-cc *.c -o model</code>. This will create the <code>model</code>
-executable, which is the model code already linked with the ROOT-sim library.
-<code>rootsim-cc</code> ultimately relies on <code>gcc</code>, so any flag supported by
-<code>gcc</code> can be passed to <code>rootsim-cc</code>.</p>
-
-<p>To test the correctness of the model, it can be run sequentially, typing
-<code>./model --sequential --nprc &lt;number of required LPs&gt;</code>
-This allows to spot errors in the implementation more easily.</p>
-
-<p>Then, to run it in parallel, type
-<code>./model --np &lt;number of available Cores&gt; --nprc &lt;number of required LPs&gt;</code></p>
-        </section>
 
         <aside id="sidebar">
+		  <div id="latest-name"><h3>Latest Stable Version</h3></div>
+		  <a href="#" class="button" id="latest-zip">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="#" class="button" id="latest-tgz">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+		  <br/>
+		  <h3>Latest Development Version</h3>
           <a href="https://github.com/HPDCS/ROOT-Sim/zipball/master" class="button">
             <small>Download</small>
             .zip file
@@ -159,24 +101,20 @@ This allows to spot errors in the implementation more easily.</p>
             <small>Download</small>
             .tar.gz file
           </a>
-
-          <p class="repo-owner"><a href="https://github.com/HPDCS/ROOT-Sim"></a> is maintained by <a href="https://github.com/HPDCS">HPDCS</a>.</p>
-
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
         </aside>
       </div>
     </div>
 
-            <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-26544119-1");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+		try {
+		  var pageTracker = _gat._getTracker("UA-26544119-1");
+		pageTracker._trackPageview();
+		} catch(err) {}
+    </script>
 
   </body>
 </html>
