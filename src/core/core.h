@@ -199,13 +199,6 @@ typedef struct _msg_hdr_t {
 	unsigned long long	mark;
 } msg_hdr_t;
 
-// This is a structure used to setup an obstacle map in a grid of cells
-typedef struct obstacles_t {
-	size_t size;
-	unsigned int grid[];
-} obstacles_t;
-
-
 /// Barrier for all worker threads
 extern barrier_t all_thread_barrier;
 
@@ -227,6 +220,8 @@ extern void (**ProcessEvent)(unsigned int me, simtime_t now, int event_type, voi
 
 extern void base_init(void);
 extern void base_fini(void);
+extern void base_serial_init(void);
+extern void base_serial_fini(void);
 extern GID_t LidToGid(LID_t lid);
 extern LID_t GidToLid(GID_t gid);
 extern unsigned int GidToKernel(GID_t gid);
